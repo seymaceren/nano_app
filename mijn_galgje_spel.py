@@ -76,6 +76,8 @@ def speel_galg():
     if not os.path.exists("mijn_galgje_spel.json"):
         woorden_bestand = open("mijn_galgje_spel.json", "w+")
         woorden_bestand.write(woorden)
+        # Na aanmaken bestand json string woorden wordt in een json object geladen
+        json_data = json.loads(woorden)
     else:
         # Als het bestand bestaat dan wordt het geopend om in te lezen in een JSON variabele
         with open("mijn_galgje_spel.json", "r") as file:
