@@ -6,6 +6,7 @@
 import json
 import os
 import random
+import datetime
 from json import JSONEncoder
 
 # inhoud van mijn JSON bestand
@@ -97,6 +98,7 @@ def speel_galg():
         niet_geraden_letters = []
         is_running = True
         aantal_fouten = 0
+        pogingen = 0
         # Zolang is_running True is dan,
         while is_running:
             #  dan wordt het galgje getekend op basis van aantal_fouten
@@ -106,12 +108,13 @@ def speel_galg():
             # dat speler niet heeft gewonnen en verlaat het spel
             if aantal_fouten == 5:
                 print(f"{naam}, helaas je hebt 5 keer geprobeerd maar het woord {woord} niet geraden.")
+                score_bijwerken(naam, False, pogingen)
                 break
 
             letters_nog_te_raden = []
             # gebruikersinvoer voor het woord of de letter
             woord_of_letter = input(f"{naam} Raad het woord of letter? ")
-
+            pogingen += 1
             # Als lengte van de invoer >1 dan is dat een geraden woord
             # en wordt vergeleken met het onthouden woord.
             # Als invoer gelijk is aan woord, dan geven we een melding van succes
@@ -119,6 +122,7 @@ def speel_galg():
             if len(woord_of_letter) > 1 and woord_of_letter == woord:
                 print(f"{naam}, gefeliciteerd! Je hebt het woord geraden.")
                 is_running = False
+                score_bijwerken(naam, True, pogingen)
             else:
                 # Als de lengte van invoer 1 is en komt de letter voor in woord
                 # dan wordt die toegevoegd in de lijst geraden_letters
@@ -161,11 +165,34 @@ def speel_galg():
                 if "".join(letters_nog_te_raden) == woord:
                     print(f"{naam}, gefeliciteerd! Je hebt het woord geraden.")
                     is_running = False
+                    score_bijwerken(naam, True, pogingen)
 
+# Deze functie maakt een bestand met de meegegeven bestandsnaam
+# parameter 'inhoud' is een dictionary die eerst omgezet wordt
+# in een json string en die wordt daarna toegevoegd in het bestand.
 def maak_bestand(inhoud, bestansnaam):
-    with open(bestansnaam, "w") as file:
+    with open(bestansnaam, "w+") as file:
         json_inhoud = json.dumps(inhoud)
         file.write(json_inhoud)
+
+# Deze functie werkt de score van de spelers bij in een json bestand
+# parameters naam, is_graden (boolean) en aantal pogingen
+# Als datum wordt de datum van  vandaag bijgeschreven
+def score_bijwerken(naam, is_geraden, pogingen):
+    score = {}
+    score["naam"] = naam
+    score["woord_graden"] = is_geraden
+    score["aantal_keren_raden"] = pogingen
+    score["datum"] = datetime.datetime.now().strftime("%d/%m/%Y")
+    if not os.path.exists("score.json"):
+        with open("score.json", "w+") as file:
+            json_inhoud = json.dumps(score)
+            file.write(json_inhoud + "\n\r")
+    else:
+        with open("score.json", "a") as file:
+            json_inhoud = json.dumps(score)
+            file.write(json_inhoud + "\n\r")
+
 
 
 speel_galg()
