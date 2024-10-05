@@ -9,9 +9,9 @@ import random
 from json import JSONEncoder
 
 # inhoud van mijn JSON bestand
-woorden = """{"makkelijk": ["bal", "appel", "klok","vogel","zon","maan","rups","kalf","haas","kip"], 
+woorden = {"makkelijk": ["bal", "appel", "klok","vogel","zon","maan","rups","kalf","haas","kip"],
                        "gemiddeld": ["bankstel", "laptoptas", "computer","geniaal", "vloerkleed","examen","schoolbus","regenlaarzen","capuchon","teamleider"],
-                       "moeilijk": ["boodschappenlijstje", "paraferen", "geavanceerd","raamkozijn","gegeneraliseerd","eloquent","traditiegetrouw","belangeloos","adequaat"] }"""
+                       "moeilijk": ["boodschappenlijstje", "paraferen", "geavanceerd","raamkozijn","gegeneraliseerd","eloquent","traditiegetrouw","belangeloos","adequaat"] }
 # Deze functie zorgt ervoor dat voor elke foute invoer
 # een deel van de hangman getekent wordt
 # parameter aantal_fouten is de index van lijst hangman
@@ -74,10 +74,9 @@ def speel_galg():
     # Bij eerste keer runnen wordt het bestand aangemaakt
     json_data = None
     if not os.path.exists("mijn_galgje_spel.json"):
-        woorden_bestand = open("mijn_galgje_spel.json", "w+")
-        woorden_bestand.write(woorden)
-        # Na aanmaken bestand json string woorden wordt in een json object geladen
-        json_data = json.loads(woorden)
+        maak_bestand(woorden, "mijn_galgje_spel.json")
+        # Na aanmaken van het bestand dictionary woorden toekennen aan json_data
+        json_data = woorden
     else:
         # Als het bestand bestaat dan wordt het geopend om in te lezen in een JSON variabele
         with open("mijn_galgje_spel.json", "r") as file:
@@ -102,6 +101,7 @@ def speel_galg():
         while is_running:
             #  dan wordt het galgje getekend op basis van aantal_fouten
             teken_galg(aantal_fouten)
+            print(f"Je hebt nog {5 - aantal_fouten} pogingen.")
             # Als aantal fouten invoer gelijk is aan 5, geef dan een melding
             # dat speler niet heeft gewonnen en verlaat het spel
             if aantal_fouten == 5:
@@ -151,6 +151,9 @@ def speel_galg():
                         letters_nog_te_raden.append('_')
                     else:
                         letters_nog_te_raden.append(letter)
+
+                if (aantal_fouten):
+                    print(f"Je hebt deze letters al ingevoerd: {niet_geraden_letters}")
                 print(letters_nog_te_raden)
                 #  Hier controleren we alle geraden letters een woord vormen dat
                 #  gelijk is aan het onthouden woord.
@@ -158,5 +161,12 @@ def speel_galg():
                 if "".join(letters_nog_te_raden) == woord:
                     print(f"{naam}, gefeliciteerd! Je hebt het woord geraden.")
                     is_running = False
+
+def maak_bestand(inhoud, bestansnaam):
+    with open(bestansnaam, "w") as file:
+        json_inhoud = json.dumps(inhoud)
+        file.write(json_inhoud)
+
+
 speel_galg()
 
