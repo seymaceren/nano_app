@@ -73,6 +73,7 @@ def speel_galg():
     # met os.path.exist controleren we of het JSON bestand bestaat en zo niet:
     # dan wordt het toch aangemaakt.
     # Bij eerste keer runnen wordt het bestand aangemaakt
+    print("Welkom bij Galg spel!")
     json_data = None
     if not os.path.exists("mijn_galgje_spel.json"):
         maak_bestand(woorden, "mijn_galgje_spel.json")
