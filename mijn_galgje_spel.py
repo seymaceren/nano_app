@@ -171,8 +171,8 @@ def speel_galg():
 # Deze functie maakt een bestand met de meegegeven bestandsnaam
 # parameter 'inhoud' is een dictionary die eerst omgezet wordt
 # in een json string en die wordt daarna toegevoegd in het bestand.
-def maak_bestand(inhoud, bestansnaam):
-    with open(bestansnaam, "w+") as file:
+def maak_bestand(inhoud, bestandsnaam):
+    with open(bestandsnaam, "w+") as file:
         json_inhoud = json.dumps(inhoud)
         file.write(json_inhoud + "\n\r")
 
