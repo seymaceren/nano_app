@@ -174,7 +174,7 @@ def speel_galg():
 def maak_bestand(inhoud, bestansnaam):
     with open(bestansnaam, "w+") as file:
         json_inhoud = json.dumps(inhoud)
-        file.write(json_inhoud)
+        file.write(json_inhoud + "\n\r")
 
 # Deze functie werkt de score van de spelers bij in een json bestand
 # parameters naam, is_graden (boolean) en aantal pogingen
@@ -186,15 +186,11 @@ def score_bijwerken(naam, is_geraden, pogingen):
     score["aantal_keren_raden"] = pogingen
     score["datum"] = datetime.datetime.now().strftime("%d/%m/%Y")
     if not os.path.exists("score.json"):
-        with open("score.json", "w+") as file:
-            json_inhoud = json.dumps(score)
-            file.write(json_inhoud + "\n\r")
+        maak_bestand(score, "score.json")
     else:
         with open("score.json", "a") as file:
             json_inhoud = json.dumps(score)
             file.write(json_inhoud + "\n\r")
 
 
-
-speel_galg()
 
