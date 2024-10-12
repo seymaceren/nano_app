@@ -93,7 +93,7 @@ def speel_galg():
         woorden_op_moeilijkheidsgraad = json_data[moeilijkheidsgraad]
         # bepaal met random module een woord
         woord = random.choice(woorden_op_moeilijkheidsgraad)
-        print(woord)
+
 
         geraden_letters = []
         niet_geraden_letters = []
